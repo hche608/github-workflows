@@ -7,14 +7,23 @@ jobs:
   autoupdate:
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
+
+      - name: Generate GitHub App Token
+        id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.GH_APP_ID }}
+          private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+
       - name: Update ALL THE PRS! 🎉
         uses: castastrophe/actions-pr-auto-update@v1.1.0
         with:
           # defaults to github.token
-          token: ${{ secrets.OT_PR_WRITE }}
+          token: ${{ steps.generate_token.outputs.token }}
           # Optional: include a limit to the number of PRs to update (default is 100)
           limit: 10
           # Optional: set this to true if you want to include draft PRs in those to be updated
