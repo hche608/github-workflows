@@ -2,6 +2,11 @@ name: auto-update
 
 on:
   workflow_call:  # Make it callable from other repos
+    secrets:
+      GH_APP_ID:
+        required: true
+      GH_APP_PRIVATE_KEY:
+        required: true
 
 jobs:
   autoupdate:
@@ -12,12 +17,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Generate GitHub App Token
+      - name: Generate GitHub App token
         id: generate_token
-        uses: tibdex/github-app-token@v1
+        uses: actions/create-github-app-token@v2
         with:
-          app_id: ${{ secrets.GH_APP_ID }}
-          private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
 
       - name: Update ALL THE PRS! 🎉
         uses: castastrophe/actions-pr-auto-update@v1.1.0
