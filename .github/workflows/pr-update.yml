@@ -6,6 +6,9 @@ on:
       repo:
         required: true
         type: string
+      owner:
+        required: true
+        type: string
     secrets:
       GH_APP_ID:
         required: true
@@ -27,6 +30,7 @@ jobs:
         with:
           app-id: ${{ secrets.GH_APP_ID }}
           private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          owner: ${{ inputs.owner }}
           repositories: ${{ inputs.repo }}
 
       - name: Update ALL THE PRS! 🎉
