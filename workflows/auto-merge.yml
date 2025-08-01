@@ -1,0 +1,21 @@
+name: enable-auto-merge
+
+on:
+  workflow_call:  # Make it callable from other repos
+    inputs:
+      pull_number:
+        required: true
+        type: number
+
+jobs:
+  automerge:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
+    steps:
+      - uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          pull-request-number: ${{ github.event.pull_request.number }}
+          merge-method: squash
