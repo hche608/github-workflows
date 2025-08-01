@@ -33,16 +33,14 @@ jobs:
           owner: ${{ inputs.owner }}
           repositories: ${{ inputs.repo }}
 
-      - name: Update ALL THE PRS! 🎉
-        uses: castastrophe/actions-pr-auto-update@v1.1.0
+      - name: Automatically update PR
+        uses: adRise/update-pr-branch@v0.10
         with:
-          # defaults to github.token
-          token: ${{ steps.generate_token.outputs.token }}
-          # Optional: include a limit to the number of PRs to update (default is 100)
-          limit: 10
-          # Optional: set this to true if you want to include draft PRs in those to be updated
-          include_drafts: true
-          # Optional: include a list of labels which, if present, will prevent the PR from being updated; these are comma-separated.
-          exclude_labels: "do not update,skip update"
-          # Optional: include a list of labels, at least one of which are required to be present for the PR to be updated; these are comma-separated.
-          include_labels: "update,update me"
+          token:  ${{ steps.generate_token.outputs.token }}
+          base: 'main'
+          required_approval_count: 1
+          require_passed_checks: true
+          allow_ongoing_checks: true
+          sort: 'created'
+          direction: 'desc'
+          require_auto_merge_enabled: true
